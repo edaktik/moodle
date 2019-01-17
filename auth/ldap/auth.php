@@ -1963,6 +1963,10 @@ class auth_plugin_ldap extends auth_plugin_base {
                                                  $this->config->user_type, $this->config->bind_dn,
                                                  $this->config->bind_pw, $this->config->opt_deref,
                                                  $debuginfo, $this->config->start_tls)) {
+            if ($this->config->ldap_version === 3) {
+                // Follow referals if it's version 3!
+                ldap_set_option($ldapconnection, LDAP_OPT_REFERRALS, 1);
+            }
             $this->ldapconns = 1;
             $this->ldapconnection = $ldapconnection;
             return $ldapconnection;
